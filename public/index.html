@@ -148,7 +148,7 @@
     }
 
     .frame-1 {
-      z-index: 3;
+      z-index: 1;
       transform: translate(-14px, 9px) rotate(-4deg);
     }
 
@@ -158,7 +158,7 @@
     }
 
     .frame-3 {
-      z-index: 1;
+      z-index: 3;
       transform: translate(14px, 10px) rotate(4deg);
     }
 
@@ -579,7 +579,7 @@
     function renderRail() {
       els.rail.innerHTML = state.trips.map((trip, index) => {
         const frames = trip.images.map((image, imageIndex) => `
-          <figure class="photo-frame frame-${imageIndex + 1}">
+          <figure class="photo-frame frame-${trip.images.length - imageIndex}">
             <img src="${escapeHtml(image)}" alt="${escapeHtml(trip.place)} ${imageIndex + 1}" loading="${index < 2 ? "eager" : "lazy"}" decoding="async">
           </figure>
         `).join("");
