@@ -424,7 +424,7 @@
       }
 
       .photo-media {
-        transition: transform .12s linear;
+        transition: none;
       }
 
       .photo-media img,
@@ -479,6 +479,7 @@
       detailFocusTimer: 0,
       detailClickProgress: 1,
       detailStartVisuals: [],
+      detailTicking: false,
       ticking: false,
       openFrame: 0,
       centeringSelected: false,
@@ -562,6 +563,12 @@
       return t * t * (3 - 2 * t);
     }
 
+    function setStyleVar(node, name, value) {
+      if (node.style.getPropertyValue(name) !== value) {
+        node.style.setProperty(name, value);
+      }
+    }
+
     function renderRail() {
       els.rail.innerHTML = state.trips.map((trip, index) => {
         const frames = trip.images.map((image, imageIndex) => `
@@ -622,7 +629,7 @@
       `;
 
       const track = els.detail.querySelector(".photo-track");
-      track?.addEventListener("scroll", updateDetailCards, { passive: true });
+      track?.addEventListener("scroll", scheduleDetailCardsUpdate, { passive: true });
       track?.addEventListener("click", event => {
         const card = closestDetailCardToX(track, event.clientX);
         if (card) centerDetailCard(card);
@@ -714,20 +721,31 @@
           : Math.max(96, Math.min(maxWidth, maxHeight * ratio));
         layoutWidths[index] = layoutWidth;
 
-        card.style.setProperty("--card-scale", String(scale));
-        card.style.setProperty("--card-render-scale", String(settings.compact ? scale : 1));
-        card.style.setProperty("--card-max-width", `${maxWidth}px`);
-        card.style.setProperty("--card-max-height", `${maxHeight}px`);
-        card.style.setProperty("--card-layout-width", `${layoutWidth}px`);
-        card.style.setProperty("--card-tilt", `${tilt.toFixed(2)}deg`);
-        card.style.setProperty("--card-depth", `${depth.toFixed(2)}px`);
-        card.style.setProperty("--card-z", String(Math.round(scale * 100)));
+        setStyleVar(card, "--card-scale", String(scale));
+        setStyleVar(card, "--card-render-scale", String(settings.compact ? scale : 1));
+        setStyleVar(card, "--card-max-width", `${maxWidth}px`);
+        setStyleVar(card, "--card-max-height", `${maxHeight}px`);
+        setStyleVar(card, "--card-layout-width", `${layoutWidth}px`);
+        setStyleVar(card, "--card-tilt", `${tilt.toFixed(2)}deg`);
+        setStyleVar(card, "--card-depth", `${depth.toFixed(2)}px`);
+        setStyleVar(card, "--card-z", String(Math.round(scale * 100)));
       });
 
       const firstWidth = layoutWidths[0] || baseWidth;
       const lastWidth = layoutWidths[layoutWidths.length - 1] || firstWidth;
-      track.style.setProperty("--track-pad-start", `${Math.max(24, window.innerWidth / 2 - firstWidth / 2)}px`);
-      track.style.setProperty("--track-pad-end", `${Math.max(24, window.innerWidth / 2 - lastWidth / 2)}px`);
+      if (!settings.compact) {
+        setStyleVar(track, "--track-pad-start", `${Math.max(24, window.innerWidth / 2 - firstWidth / 2)}px`);
+        setStyleVar(track, "--track-pad-end", `${Math.max(24, window.innerWidth / 2 - lastWidth / 2)}px`);
+      }
+    }
+
+    function scheduleDetailCardsUpdate() {
+      if (state.detailTicking) return;
+      state.detailTicking = true;
+      requestAnimationFrame(() => {
+        updateDetailCards();
+        state.detailTicking = false;
+      });
     }
 
     function updateDetailVisuals() {
