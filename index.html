@@ -278,6 +278,7 @@
       --card-max-width: 220px;
       --card-max-height: 220px;
       --card-layout-width: 220px;
+      --card-render-scale: 1;
       --card-tilt: 0deg;
       --card-depth: 0px;
       --card-z: 0;
@@ -317,7 +318,7 @@
       align-items: center;
       justify-content: center;
       overflow: visible;
-      transform: translateZ(var(--card-depth)) rotateY(var(--card-tilt));
+      transform: translateZ(var(--card-depth)) rotateY(var(--card-tilt)) scale(var(--card-render-scale));
       transform-origin: center center;
       transform-style: preserve-3d;
       backface-visibility: hidden;
@@ -408,14 +409,27 @@
       }
 
       .photo-track {
-        --photo-slot: 82vw;
-        --photo-visual: calc(100vw - 48px);
-        gap: 24px;
-        padding: 0 9vw 22px;
+        --photo-slot: 76vw;
+        --photo-visual: calc(100vw - 42px);
+        gap: 14vw;
+        padding: 0 max(12vw, calc(50vw - 38vw)) 18px;
+        perspective: 760px;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x pan-y;
       }
 
       .photo-card {
         flex-basis: var(--card-layout-width);
+        transition: none;
+      }
+
+      .photo-media {
+        transition: transform .12s linear;
+      }
+
+      .photo-media img,
+      .photo-copy {
+        transition: none;
       }
     }
   </style>
@@ -632,19 +646,35 @@
       els.detail.style.setProperty("--detail-opacity", String(eased));
     }
 
+    function getDetailMotionSettings() {
+      const compact = window.matchMedia("(max-width: 760px), (pointer: coarse)").matches;
+      return {
+        compact,
+        minScale: compact ? .74 : .42,
+        focusRangeFactor: compact ? .9 : .62,
+        tiltDeg: compact ? 2.5 : MOTION.photoTiltDeg,
+        depthPx: compact ? 6 : MOTION.photoDepthPx
+      };
+    }
+
     function updateDetailCards() {
       const track = els.detail.querySelector(".photo-track");
       if (!track) return;
 
       const trackRect = track.getBoundingClientRect();
       const centerX = trackRect.left + trackRect.width / 2;
-      const baseWidth = Math.min(Math.max(window.innerWidth * .27, 440), 520, window.innerWidth - 56);
-      const baseHeight = Math.max(160, trackRect.height - 86);
+      const settings = getDetailMotionSettings();
+      const baseWidth = settings.compact
+        ? Math.min(Math.max(window.innerWidth * .76, 260), 430, window.innerWidth - 42)
+        : Math.min(Math.max(window.innerWidth * .27, 440), 520, window.innerWidth - 56);
+      const baseHeight = settings.compact
+        ? Math.max(160, trackRect.height - 76)
+        : Math.max(160, trackRect.height - 86);
       const cards = Array.from(track.querySelectorAll(".photo-card"));
       const focusIndex = Number.isInteger(state.detailFocusIndex)
         ? Math.max(0, Math.min(state.detailFocusIndex, cards.length - 1))
         : null;
-      const focusRange = Math.max(1, trackRect.width * .62);
+      const focusRange = Math.max(1, trackRect.width * settings.focusRangeFactor);
       const layoutWidths = [];
 
       cards.forEach((card, index) => {
@@ -671,18 +701,21 @@
           side = startSide + (lockedSide - startSide) * blend;
         }
 
-        const scale = .42 + focus * .58;
-        const tilt = -side * (1 - focus) * MOTION.photoTiltDeg;
-        const depth = -MOTION.photoDepthPx * (1 - focus);
+        const scale = settings.minScale + focus * (1 - settings.minScale);
+        const tilt = -side * (1 - focus) * settings.tiltDeg;
+        const depth = -settings.depthPx * (1 - focus);
         const naturalWidth = img?.naturalWidth || baseWidth;
         const naturalHeight = img?.naturalHeight || baseHeight;
         const ratio = naturalWidth / Math.max(1, naturalHeight);
-        const maxWidth = Math.max(96, baseWidth * scale);
-        const maxHeight = Math.max(96, baseHeight * scale);
-        const layoutWidth = Math.max(96, Math.min(maxWidth, maxHeight * ratio));
+        const maxWidth = settings.compact ? baseWidth : Math.max(96, baseWidth * scale);
+        const maxHeight = settings.compact ? baseHeight : Math.max(96, baseHeight * scale);
+        const layoutWidth = settings.compact
+          ? baseWidth
+          : Math.max(96, Math.min(maxWidth, maxHeight * ratio));
         layoutWidths[index] = layoutWidth;
 
         card.style.setProperty("--card-scale", String(scale));
+        card.style.setProperty("--card-render-scale", String(settings.compact ? scale : 1));
         card.style.setProperty("--card-max-width", `${maxWidth}px`);
         card.style.setProperty("--card-max-height", `${maxHeight}px`);
         card.style.setProperty("--card-layout-width", `${layoutWidth}px`);
@@ -703,13 +736,14 @@
     }
 
     function captureDetailStartVisuals(track) {
+      const settings = getDetailMotionSettings();
       return Array.from(track.querySelectorAll(".photo-card")).map(card => {
         const style = getComputedStyle(card);
-        const scale = Number(style.getPropertyValue("--card-scale")) || .42;
-        const focus = clamp01((scale - .42) / .58);
+        const scale = Number(style.getPropertyValue("--card-scale")) || settings.minScale;
+        const focus = clamp01((scale - settings.minScale) / (1 - settings.minScale));
         const tilt = parseFloat(style.getPropertyValue("--card-tilt")) || 0;
-        const side = Math.abs(1 - focus) > .001
-          ? Math.max(-1, Math.min(-tilt / ((1 - focus) * MOTION.photoTiltDeg), 1))
+        const side = Math.abs(1 - focus) > .001 && settings.tiltDeg
+          ? Math.max(-1, Math.min(-tilt / ((1 - focus) * settings.tiltDeg), 1))
           : 0;
 
         return { focus, side };
@@ -802,11 +836,13 @@
         ));
         state.detailTargetScrollLeft = finalLeft;
         track.scrollLeft = finalLeft;
+        state.detailFocusIndex = null;
+        state.detailClickProgress = 1;
         state.detailStartVisuals = [];
-        updateDetailCards();
         track.classList.remove("is-animating");
         state.detailFrame = 0;
         state.detailMotion = "idle";
+        updateDetailCards();
       };
 
       state.detailFrame = requestAnimationFrame(step);
