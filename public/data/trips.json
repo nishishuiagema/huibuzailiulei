@@ -4,33 +4,33 @@
       "id": "20230814-01",
       "place": "泰山",
       "images": [
-        "assets/photos/泰山/Lieall_20230814_042027325.jpg",
-        "assets/photos/泰山/IMG_20230814_052711.jpg",
-        "assets/photos/泰山/IMG_20230814_053006.jpg"
+        "assets/covers/泰山/Lieall_20230814_042027325.webp",
+        "assets/covers/泰山/IMG_20230814_052711.webp",
+        "assets/covers/泰山/IMG_20230814_053006.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/泰山/Lieall_20230814_042027325.jpg",
+          "src": "assets/photos/泰山/Lieall_20230814_042027325.webp",
           "time": "2023.08.14 04:20",
           "text": ""
         },
         {
-          "src": "assets/photos/泰山/IMG_20230814_052711.jpg",
+          "src": "assets/photos/泰山/IMG_20230814_052711.webp",
           "time": "2023.08.14 05:27",
           "text": ""
         },
         {
-          "src": "assets/photos/泰山/IMG_20230814_053006.jpg",
+          "src": "assets/photos/泰山/IMG_20230814_053006.webp",
           "time": "2023.08.14 05:30",
           "text": ""
         },
         {
-          "src": "assets/photos/泰山/IMG_20230814_060626.jpg",
+          "src": "assets/photos/泰山/IMG_20230814_060626.webp",
           "time": "2023.08.14 06:06",
           "text": ""
         },
         {
-          "src": "assets/photos/泰山/20230814.jpg",
+          "src": "assets/photos/泰山/20230814.webp",
           "time": "",
           "text": ""
         }
@@ -40,33 +40,33 @@
       "id": "20230815-02",
       "place": "威海",
       "images": [
-        "assets/photos/威海/IMG_20230815_133127.jpg",
-        "assets/photos/威海/IMG_20230815_135038.jpg",
-        "assets/photos/威海/IMG_20230815_160538.jpg"
+        "assets/covers/威海/IMG_20230815_133127.webp",
+        "assets/covers/威海/IMG_20230815_135038.webp",
+        "assets/covers/威海/IMG_20230815_160538.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/威海/IMG_20230815_133127.jpg",
+          "src": "assets/photos/威海/IMG_20230815_133127.webp",
           "time": "2023.08.15 13:31",
           "text": ""
         },
         {
-          "src": "assets/photos/威海/IMG_20230815_135038.jpg",
+          "src": "assets/photos/威海/IMG_20230815_135038.webp",
           "time": "2023.08.15 13:50",
           "text": ""
         },
         {
-          "src": "assets/photos/威海/IMG_20230815_160538.jpg",
+          "src": "assets/photos/威海/IMG_20230815_160538.webp",
           "time": "2023.08.15 16:05",
           "text": ""
         },
         {
-          "src": "assets/photos/威海/IMG_20230815_175450.jpg",
+          "src": "assets/photos/威海/IMG_20230815_175450.webp",
           "time": "2023.08.15 17:54",
           "text": ""
         },
         {
-          "src": "assets/photos/威海/IMG_20230815_184538.jpg",
+          "src": "assets/photos/威海/IMG_20230815_184538.webp",
           "time": "2023.08.15 18:45",
           "text": ""
         }
@@ -76,48 +76,48 @@
       "id": "20230817-03",
       "place": "南京",
       "images": [
-        "assets/photos/南京/IMG_20230817_050609.jpg",
-        "assets/photos/南京/IMG_20230817_153914.jpg",
-        "assets/photos/南京/IMG_20230817_160004.jpg"
+        "assets/covers/南京/IMG_20230817_050609.webp",
+        "assets/covers/南京/IMG_20230817_153914.webp",
+        "assets/covers/南京/IMG_20230817_160004.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/南京/IMG_20230817_050609.jpg",
+          "src": "assets/photos/南京/IMG_20230817_050609.webp",
           "time": "2023.08.17 05:06",
           "text": ""
         },
         {
-          "src": "assets/photos/南京/IMG_20230817_153914.jpg",
+          "src": "assets/photos/南京/IMG_20230817_153914.webp",
           "time": "2023.08.17 15:39",
           "text": ""
         },
         {
-          "src": "assets/photos/南京/IMG_20230817_160004.jpg",
+          "src": "assets/photos/南京/IMG_20230817_160004.webp",
           "time": "2023.08.17 16:00",
           "text": ""
         },
         {
-          "src": "assets/photos/南京/IMG_20230817_161631.jpg",
+          "src": "assets/photos/南京/IMG_20230817_161631.webp",
           "time": "2023.08.17 16:16",
           "text": ""
         },
         {
-          "src": "assets/photos/南京/IMG_20230817_165307.jpg",
+          "src": "assets/photos/南京/IMG_20230817_165307.webp",
           "time": "2023.08.17 16:53",
           "text": ""
         },
         {
-          "src": "assets/photos/南京/IMG_20230817_170007.jpg",
+          "src": "assets/photos/南京/IMG_20230817_170007.webp",
           "time": "2023.08.17 17:00",
           "text": ""
         },
         {
-          "src": "assets/photos/南京/IMG_20230817_170430.jpg",
+          "src": "assets/photos/南京/IMG_20230817_170430.webp",
           "time": "2023.08.17 17:04",
           "text": ""
         },
         {
-          "src": "assets/photos/南京/IMG_20230817_172243.jpg",
+          "src": "assets/photos/南京/IMG_20230817_172243.webp",
           "time": "2023.08.17 17:22",
           "text": ""
         }
@@ -127,103 +127,103 @@
       "id": "20240328-04",
       "place": "武汉",
       "images": [
-        "assets/photos/武汉/IMG_20240328_043707.jpg",
-        "assets/photos/武汉/IMG_20240328_052501.jpg",
-        "assets/photos/武汉/MVIMG_20240328_055103.jpg"
+        "assets/covers/武汉/IMG_20240328_043707.webp",
+        "assets/covers/武汉/IMG_20240328_052501.webp",
+        "assets/covers/武汉/MVIMG_20240328_055103.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/武汉/IMG_20240328_043707.jpg",
+          "src": "assets/photos/武汉/IMG_20240328_043707.webp",
           "time": "2024.03.28 04:37",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240328_052501.jpg",
+          "src": "assets/photos/武汉/IMG_20240328_052501.webp",
           "time": "2024.03.28 05:25",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/MVIMG_20240328_055103.jpg",
+          "src": "assets/photos/武汉/MVIMG_20240328_055103.webp",
           "time": "2024.03.28 05:51",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240328_063250.jpg",
+          "src": "assets/photos/武汉/IMG_20240328_063250.webp",
           "time": "2024.03.28 06:32",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/MVIMG_20240328_074757.jpg",
+          "src": "assets/photos/武汉/MVIMG_20240328_074757.webp",
           "time": "2024.03.28 07:47",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240328_083124.jpg",
+          "src": "assets/photos/武汉/IMG_20240328_083124.webp",
           "time": "2024.03.28 08:31",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240328_091122.jpg",
+          "src": "assets/photos/武汉/IMG_20240328_091122.webp",
           "time": "2024.03.28 09:11",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240328_095257.jpg",
+          "src": "assets/photos/武汉/IMG_20240328_095257.webp",
           "time": "2024.03.28 09:52",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/MVIMG_20240328_121530.jpg",
+          "src": "assets/photos/武汉/MVIMG_20240328_121530.webp",
           "time": "2024.03.28 12:15",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240328_190759.jpg",
+          "src": "assets/photos/武汉/IMG_20240328_190759.webp",
           "time": "2024.03.28 19:07",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240329_090842.jpg",
+          "src": "assets/photos/武汉/IMG_20240329_090842.webp",
           "time": "2024.03.29 09:08",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/MVIMG_20240329_092253.jpg",
+          "src": "assets/photos/武汉/MVIMG_20240329_092253.webp",
           "time": "2024.03.29 09:22",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240329_095928.jpg",
+          "src": "assets/photos/武汉/IMG_20240329_095928.webp",
           "time": "2024.03.29 09:59",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240329_125442.jpg",
+          "src": "assets/photos/武汉/IMG_20240329_125442.webp",
           "time": "2024.03.29 12:54",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240329_130222.jpg",
+          "src": "assets/photos/武汉/IMG_20240329_130222.webp",
           "time": "2024.03.29 13:02",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240329_133004.jpg",
+          "src": "assets/photos/武汉/IMG_20240329_133004.webp",
           "time": "2024.03.29 13:30",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/MVIMG_20240329_182446.jpg",
+          "src": "assets/photos/武汉/MVIMG_20240329_182446.webp",
           "time": "2024.03.29 18:24",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240330_063757.jpg",
+          "src": "assets/photos/武汉/IMG_20240330_063757.webp",
           "time": "2024.03.30 06:37",
           "text": ""
         },
         {
-          "src": "assets/photos/武汉/IMG_20240330_090313.jpg",
+          "src": "assets/photos/武汉/IMG_20240330_090313.webp",
           "time": "2024.03.30 09:03",
           "text": ""
         }
@@ -233,28 +233,28 @@
       "id": "20240330-05",
       "place": "长沙",
       "images": [
-        "assets/photos/长沙/IMG_20240330_161959.jpg",
-        "assets/photos/长沙/IMG_20240331_122834.jpg",
-        "assets/photos/长沙/retouch_2024040115311276.jpg"
+        "assets/covers/长沙/IMG_20240330_161959.webp",
+        "assets/covers/长沙/IMG_20240331_122834.webp",
+        "assets/covers/长沙/retouch_2024040115311276.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/长沙/IMG_20240330_161959.jpg",
+          "src": "assets/photos/长沙/IMG_20240330_161959.webp",
           "time": "2024.03.30 16:19",
           "text": ""
         },
         {
-          "src": "assets/photos/长沙/IMG_20240331_122834.jpg",
+          "src": "assets/photos/长沙/IMG_20240331_122834.webp",
           "time": "2024.03.31 12:28",
           "text": ""
         },
         {
-          "src": "assets/photos/长沙/retouch_2024040115311276.jpg",
+          "src": "assets/photos/长沙/retouch_2024040115311276.webp",
           "time": "2024.04.01 15:31",
           "text": ""
         },
         {
-          "src": "assets/photos/长沙/IMG_20240401_191723.jpg",
+          "src": "assets/photos/长沙/IMG_20240401_191723.webp",
           "time": "2024.04.01 19:17",
           "text": ""
         }
@@ -264,28 +264,28 @@
       "id": "20240804-06",
       "place": "武功山",
       "images": [
-        "assets/photos/武功山/IMG_20240804_051223.jpg",
-        "assets/photos/武功山/IMG_20240804_060100.jpg",
-        "assets/photos/武功山/IMG_20240804_070633.jpg"
+        "assets/covers/武功山/IMG_20240804_051223.webp",
+        "assets/covers/武功山/IMG_20240804_060100.webp",
+        "assets/covers/武功山/IMG_20240804_070633.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/武功山/IMG_20240804_051223.jpg",
+          "src": "assets/photos/武功山/IMG_20240804_051223.webp",
           "time": "2024.08.04 05:12",
           "text": ""
         },
         {
-          "src": "assets/photos/武功山/IMG_20240804_060100.jpg",
+          "src": "assets/photos/武功山/IMG_20240804_060100.webp",
           "time": "2024.08.04 06:01",
           "text": ""
         },
         {
-          "src": "assets/photos/武功山/IMG_20240804_070633.jpg",
+          "src": "assets/photos/武功山/IMG_20240804_070633.webp",
           "time": "2024.08.04 07:06",
           "text": ""
         },
         {
-          "src": "assets/photos/武功山/20240804.jpg",
+          "src": "assets/photos/武功山/20240804.webp",
           "time": "",
           "text": ""
         }
@@ -295,28 +295,28 @@
       "id": "20240917-07",
       "place": "苏州",
       "images": [
-        "assets/photos/苏州/IMG_20240917_105719.jpg",
-        "assets/photos/苏州/IMG_20240917_123913.jpg",
-        "assets/photos/苏州/IMG_20240917_182433.jpg"
+        "assets/covers/苏州/IMG_20240917_105719.webp",
+        "assets/covers/苏州/IMG_20240917_123913.webp",
+        "assets/covers/苏州/IMG_20240917_182433.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/苏州/IMG_20240917_105719.jpg",
+          "src": "assets/photos/苏州/IMG_20240917_105719.webp",
           "time": "2024.09.17 10:57",
           "text": ""
         },
         {
-          "src": "assets/photos/苏州/IMG_20240917_123913.jpg",
+          "src": "assets/photos/苏州/IMG_20240917_123913.webp",
           "time": "2024.09.17 12:39",
           "text": ""
         },
         {
-          "src": "assets/photos/苏州/IMG_20240917_182433.jpg",
+          "src": "assets/photos/苏州/IMG_20240917_182433.webp",
           "time": "2024.09.17 18:24",
           "text": ""
         },
         {
-          "src": "assets/photos/苏州/IMG_20240917_191721.jpg",
+          "src": "assets/photos/苏州/IMG_20240917_191721.webp",
           "time": "2024.09.17 19:17",
           "text": ""
         }
@@ -326,33 +326,33 @@
       "id": "20250308-08",
       "place": "上海",
       "images": [
-        "assets/photos/上海/IMG_20250308_120825.jpg",
-        "assets/photos/上海/quality_restoration_20250308202417670.jpg",
-        "assets/photos/上海/MVIMG_20250308_213410.jpg"
+        "assets/covers/上海/IMG_20250308_120825.webp",
+        "assets/covers/上海/quality_restoration_20250308202417670.webp",
+        "assets/covers/上海/MVIMG_20250308_213410.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/上海/IMG_20250308_120825.jpg",
+          "src": "assets/photos/上海/IMG_20250308_120825.webp",
           "time": "2025.03.08 12:08",
           "text": ""
         },
         {
-          "src": "assets/photos/上海/quality_restoration_20250308202417670.jpg",
+          "src": "assets/photos/上海/quality_restoration_20250308202417670.webp",
           "time": "2025.03.08 20:24",
           "text": ""
         },
         {
-          "src": "assets/photos/上海/MVIMG_20250308_213410.jpg",
+          "src": "assets/photos/上海/MVIMG_20250308_213410.webp",
           "time": "2025.03.08 21:34",
           "text": ""
         },
         {
-          "src": "assets/photos/上海/IMG_20250309_131619.jpg",
+          "src": "assets/photos/上海/IMG_20250309_131619.webp",
           "time": "2025.03.09 13:16",
           "text": ""
         },
         {
-          "src": "assets/photos/上海/MVIMG_20250309_145751.jpg",
+          "src": "assets/photos/上海/MVIMG_20250309_145751.webp",
           "time": "2025.03.09 14:57",
           "text": ""
         }
@@ -362,43 +362,43 @@
       "id": "20250323-09",
       "place": "青岛",
       "images": [
-        "assets/photos/青岛/MVIMG_20250323_163035.jpg",
-        "assets/photos/青岛/IMG_20250323_182048.jpg",
-        "assets/photos/青岛/MVIMG_20250323_203615.jpg"
+        "assets/covers/青岛/MVIMG_20250323_163035.webp",
+        "assets/covers/青岛/IMG_20250323_182048.webp",
+        "assets/covers/青岛/MVIMG_20250323_203615.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/青岛/MVIMG_20250323_163035.jpg",
+          "src": "assets/photos/青岛/MVIMG_20250323_163035.webp",
           "time": "2025.03.23 16:30",
           "text": ""
         },
         {
-          "src": "assets/photos/青岛/IMG_20250323_182048.jpg",
+          "src": "assets/photos/青岛/IMG_20250323_182048.webp",
           "time": "2025.03.23 18:20",
           "text": ""
         },
         {
-          "src": "assets/photos/青岛/MVIMG_20250323_203615.jpg",
+          "src": "assets/photos/青岛/MVIMG_20250323_203615.webp",
           "time": "2025.03.23 20:36",
           "text": ""
         },
         {
-          "src": "assets/photos/青岛/IMG_20250324_110931.jpg",
+          "src": "assets/photos/青岛/IMG_20250324_110931.webp",
           "time": "2025.03.24 11:09",
           "text": ""
         },
         {
-          "src": "assets/photos/青岛/MVIMG_20250324_121004.jpg",
+          "src": "assets/photos/青岛/MVIMG_20250324_121004.webp",
           "time": "2025.03.24 12:10",
           "text": ""
         },
         {
-          "src": "assets/photos/青岛/MVIMG_20250324_172923.jpg",
+          "src": "assets/photos/青岛/MVIMG_20250324_172923.webp",
           "time": "2025.03.24 17:29",
           "text": ""
         },
         {
-          "src": "assets/photos/青岛/MVIMG_20250324_180432.jpg",
+          "src": "assets/photos/青岛/MVIMG_20250324_180432.webp",
           "time": "2025.03.24 18:04",
           "text": ""
         }
@@ -408,138 +408,138 @@
       "id": "20250731-10",
       "place": "稻城亚丁",
       "images": [
-        "assets/photos/稻城亚丁/MVIMG_20250731_114747.jpg",
-        "assets/photos/稻城亚丁/MVIMG_20250731_175322.jpg",
-        "assets/photos/稻城亚丁/MVIMG_20250801_093425.jpg"
+        "assets/covers/稻城亚丁/MVIMG_20250731_114747.webp",
+        "assets/covers/稻城亚丁/MVIMG_20250731_175322.webp",
+        "assets/covers/稻城亚丁/MVIMG_20250801_093425.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250731_114747.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250731_114747.webp",
           "time": "2025.07.31 11:47",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250731_175322.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250731_175322.webp",
           "time": "2025.07.31 17:53",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_093425.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_093425.webp",
           "time": "2025.08.01 09:34",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_104005.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_104005.webp",
           "time": "2025.08.01 10:40",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_123803.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_123803.webp",
           "time": "2025.08.01 12:38",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_135416.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_135416.webp",
           "time": "2025.08.01 13:54",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_141458.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_141458.webp",
           "time": "2025.08.01 14:14",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_142625.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_142625.webp",
           "time": "2025.08.01 14:26",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_142745.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_142745.webp",
           "time": "2025.08.01 14:27",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_144928.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_144928.webp",
           "time": "2025.08.01 14:49",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/MVIMG_20250801_150305.jpg",
+          "src": "assets/photos/稻城亚丁/MVIMG_20250801_150305.webp",
           "time": "2025.08.01 15:03",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/mmexport1754108008208.jpg",
+          "src": "assets/photos/稻城亚丁/mmexport1754108008208.webp",
           "time": "2025.08.02 12:13",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/mmexport1754108009022.jpg",
+          "src": "assets/photos/稻城亚丁/mmexport1754108009022.webp",
           "time": "2025.08.02 12:13",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/mmexport1754108009896.jpg",
+          "src": "assets/photos/稻城亚丁/mmexport1754108009896.webp",
           "time": "2025.08.02 12:13",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/IMG_20250802_143017.jpg",
+          "src": "assets/photos/稻城亚丁/IMG_20250802_143017.webp",
           "time": "2025.08.02 14:30",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/IMG_20250802_143627.jpg",
+          "src": "assets/photos/稻城亚丁/IMG_20250802_143627.webp",
           "time": "2025.08.02 14:36",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000007.jpg",
+          "src": "assets/photos/稻城亚丁/000007.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000009.jpg",
+          "src": "assets/photos/稻城亚丁/000009.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000013.jpg",
+          "src": "assets/photos/稻城亚丁/000013.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000014.jpg",
+          "src": "assets/photos/稻城亚丁/000014.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000017.jpg",
+          "src": "assets/photos/稻城亚丁/000017.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000019.jpg",
+          "src": "assets/photos/稻城亚丁/000019.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000020.jpg",
+          "src": "assets/photos/稻城亚丁/000020.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000022.jpg",
+          "src": "assets/photos/稻城亚丁/000022.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000030.jpg",
+          "src": "assets/photos/稻城亚丁/000030.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/稻城亚丁/000033.jpg",
+          "src": "assets/photos/稻城亚丁/000033.webp",
           "time": "",
           "text": ""
         }
@@ -549,63 +549,63 @@
       "id": "20250802-11",
       "place": "香格里拉",
       "images": [
-        "assets/photos/香格里拉/MVIMG_20250802_191110.jpg",
-        "assets/photos/香格里拉/MVIMG_20250803_120752.jpg",
-        "assets/photos/香格里拉/MVIMG_20250803_123938.jpg"
+        "assets/covers/香格里拉/MVIMG_20250802_191110.webp",
+        "assets/covers/香格里拉/MVIMG_20250803_120752.webp",
+        "assets/covers/香格里拉/MVIMG_20250803_123938.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/香格里拉/MVIMG_20250802_191110.jpg",
+          "src": "assets/photos/香格里拉/MVIMG_20250802_191110.webp",
           "time": "2025.08.02 19:11",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/MVIMG_20250803_120752.jpg",
+          "src": "assets/photos/香格里拉/MVIMG_20250803_120752.webp",
           "time": "2025.08.03 12:07",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/MVIMG_20250803_123938.jpg",
+          "src": "assets/photos/香格里拉/MVIMG_20250803_123938.webp",
           "time": "2025.08.03 12:39",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/MVIMG_20250803_203000.jpg",
+          "src": "assets/photos/香格里拉/MVIMG_20250803_203000.webp",
           "time": "2025.08.03 20:30",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/mmexport1754319581135.jpg",
+          "src": "assets/photos/香格里拉/mmexport1754319581135.webp",
           "time": "2025.08.04 22:59",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/mmexport1754319653760.jpg",
+          "src": "assets/photos/香格里拉/mmexport1754319653760.webp",
           "time": "2025.08.04 23:00",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/000001.jpg",
+          "src": "assets/photos/香格里拉/000001.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/000086290026.jpg",
+          "src": "assets/photos/香格里拉/000086290026.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/000086290032.jpg",
+          "src": "assets/photos/香格里拉/000086290032.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/000086290035.jpg",
+          "src": "assets/photos/香格里拉/000086290035.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/香格里拉/000086290036.jpg",
+          "src": "assets/photos/香格里拉/000086290036.webp",
           "time": "",
           "text": ""
         }
@@ -615,58 +615,58 @@
       "id": "20250805-12",
       "place": "丽江",
       "images": [
-        "assets/photos/丽江/MVIMG_20250805_110744.jpg",
-        "assets/photos/丽江/MVIMG_20250805_113656.jpg",
-        "assets/photos/丽江/MVIMG_20250805_140332.jpg"
+        "assets/covers/丽江/MVIMG_20250805_110744.webp",
+        "assets/covers/丽江/MVIMG_20250805_113656.webp",
+        "assets/covers/丽江/MVIMG_20250805_140332.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/丽江/MVIMG_20250805_110744.jpg",
+          "src": "assets/photos/丽江/MVIMG_20250805_110744.webp",
           "time": "2025.08.05 11:07",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/MVIMG_20250805_113656.jpg",
+          "src": "assets/photos/丽江/MVIMG_20250805_113656.webp",
           "time": "2025.08.05 11:36",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/MVIMG_20250805_140332.jpg",
+          "src": "assets/photos/丽江/MVIMG_20250805_140332.webp",
           "time": "2025.08.05 14:03",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/MVIMG_20250805_201315.jpg",
+          "src": "assets/photos/丽江/MVIMG_20250805_201315.webp",
           "time": "2025.08.05 20:13",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/MVIMG_20250806_180632.jpg",
+          "src": "assets/photos/丽江/MVIMG_20250806_180632.webp",
           "time": "2025.08.06 18:06",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/000086290005.jpg",
+          "src": "assets/photos/丽江/000086290005.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/000086290008.jpg",
+          "src": "assets/photos/丽江/000086290008.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/000086290013.jpg",
+          "src": "assets/photos/丽江/000086290013.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/000086290015.jpeg",
+          "src": "assets/photos/丽江/000086290015.webp",
           "time": "",
           "text": ""
         },
         {
-          "src": "assets/photos/丽江/000086290017.jpg",
+          "src": "assets/photos/丽江/000086290017.webp",
           "time": "",
           "text": ""
         }
@@ -676,83 +676,83 @@
       "id": "20251026-13",
       "place": "北京",
       "images": [
-        "assets/photos/北京/20251026_1031.JPG",
-        "assets/photos/北京/20251026_1045.JPEG",
-        "assets/photos/北京/20251026_1117.JPEG"
+        "assets/covers/北京/20251026_1031.webp",
+        "assets/covers/北京/20251026_1045.webp",
+        "assets/covers/北京/20251026_1117.webp"
       ],
       "photos": [
         {
-          "src": "assets/photos/北京/20251026_1031.JPG",
+          "src": "assets/photos/北京/20251026_1031.webp",
           "time": "2025.10.26 10:31",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251026_1045.JPEG",
+          "src": "assets/photos/北京/20251026_1045.webp",
           "time": "2025.10.26 10:45",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251026_1117.JPEG",
+          "src": "assets/photos/北京/20251026_1117.webp",
           "time": "2025.10.26 11:17",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251026_1340.JPG",
+          "src": "assets/photos/北京/20251026_1340.webp",
           "time": "2025.10.26 13:40",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251026_1518.JPG",
+          "src": "assets/photos/北京/20251026_1518.webp",
           "time": "2025.10.26 15:18",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251026_1739.JPEG",
+          "src": "assets/photos/北京/20251026_1739.webp",
           "time": "2025.10.26 17:39",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251027_0930.JPG",
+          "src": "assets/photos/北京/20251027_0930.webp",
           "time": "2025.10.27 09:30",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251027_0933.JPG",
+          "src": "assets/photos/北京/20251027_0933.webp",
           "time": "2025.10.27 09:33",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251027_0940.JPG",
+          "src": "assets/photos/北京/20251027_0940.webp",
           "time": "2025.10.27 09:40",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251027_1335.JPG",
+          "src": "assets/photos/北京/20251027_1335.webp",
           "time": "2025.10.27 13:35",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251027_1411.JPG",
+          "src": "assets/photos/北京/20251027_1411.webp",
           "time": "2025.10.27 14:11",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251027_1622.JPG",
+          "src": "assets/photos/北京/20251027_1622.webp",
           "time": "2025.10.27 16:22",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/202510277_1626.JPG",
+          "src": "assets/photos/北京/202510277_1626.webp",
           "time": "2025.10.27 16:26",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251027_1650.JPG",
+          "src": "assets/photos/北京/20251027_1650.webp",
           "time": "2025.10.27 16:50",
           "text": ""
         },
         {
-          "src": "assets/photos/北京/20251028_1344.JPG",
+          "src": "assets/photos/北京/20251028_1344.webp",
           "time": "2025.10.28 13:44",
           "text": ""
         }
