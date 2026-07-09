@@ -1,0 +1,732 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的旅行</title>
+  <meta name="description" content="极简旅行照片记录。">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #161616;
+      --muted: #747474;
+      --line: #e8e8e8;
+      --paper: #ffffff;
+      --soft: rgba(255, 255, 255, .78);
+      --shadow: 0 26px 76px rgba(0, 0, 0, .16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: auto;
+      scrollbar-width: none;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+    }
+
+    .ambient {
+      position: fixed;
+      inset: -14vh -14vw;
+      z-index: -2;
+      background-image: var(--ambient-image);
+      background-position: center;
+      background-size: cover;
+      filter: blur(22px) saturate(.85);
+      opacity: .1;
+      transform: scale(1.08);
+      transition: background-image .4s ease, opacity .25s ease;
+    }
+
+    .ambient::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, .82);
+    }
+
+    .overview {
+      position: relative;
+      height: 100svh;
+      min-height: 560px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .stage {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: visible;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    .stage::-webkit-scrollbar {
+      display: none;
+    }
+
+    .rail {
+      width: max-content;
+      min-height: min(640px, 84svh);
+      display: flex;
+      align-items: center;
+      gap: 80px;
+      padding: 72px max(24px, calc(50vw - 290px));
+    }
+
+    .trip-node {
+      --node-opacity: .12;
+      --node-scale: .82;
+      width: 580px;
+      min-height: 430px;
+      border: 0;
+      background: transparent;
+      display: grid;
+      place-items: center;
+      grid-template-rows: auto auto auto;
+      gap: 18px;
+      flex: 0 0 auto;
+      opacity: var(--node-opacity);
+      transform: scale(var(--node-scale));
+      transition: opacity .2s ease, transform .2s ease;
+      cursor: pointer;
+      will-change: transform, opacity;
+    }
+
+    .trip-node:focus-visible {
+      outline: 3px solid rgba(0, 0, 0, .22);
+      outline-offset: 10px;
+      border-radius: 8px;
+    }
+
+    .photo-stack {
+      position: relative;
+      width: 380px;
+      height: 264px;
+      overflow: visible;
+    }
+
+    .photo-frame {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      background: #f5f5f5;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform-origin: 50% 92%;
+      transition: transform .42s cubic-bezier(.2, .86, .28, 1), box-shadow .2s ease;
+      will-change: transform;
+    }
+
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .frame-1 {
+      z-index: 1;
+      transform: translate(-14px, 9px) rotate(-4deg);
+    }
+
+    .frame-2 {
+      z-index: 2;
+      transform: translate(0, 0) rotate(.5deg);
+    }
+
+    .frame-3 {
+      z-index: 3;
+      transform: translate(14px, 10px) rotate(4deg);
+    }
+
+    .trip-node:hover .frame-1,
+    .trip-node:focus-visible .frame-1,
+    .trip-node.is-focused .frame-1,
+    .trip-node.is-selected .frame-1,
+    .trip-node.is-hovered .frame-1 {
+      transform: translate(-72px, 5px) rotate(-8deg);
+    }
+
+    .trip-node:hover .frame-2,
+    .trip-node:focus-visible .frame-2,
+    .trip-node.is-focused .frame-2,
+    .trip-node.is-selected .frame-2,
+    .trip-node.is-hovered .frame-2 {
+      transform: translate(0, -10px) rotate(0deg);
+    }
+
+    .trip-node:hover .frame-3,
+    .trip-node:focus-visible .frame-3,
+    .trip-node.is-focused .frame-3,
+    .trip-node.is-selected .frame-3,
+    .trip-node.is-hovered .frame-3 {
+      transform: translate(72px, 5px) rotate(8deg);
+    }
+
+    .place {
+      margin: 0;
+      max-width: 92vw;
+      font-size: clamp(1.55rem, 3vw, 2.65rem);
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .trip-time {
+      margin: 0;
+      max-width: 92vw;
+      color: var(--muted);
+      font-size: clamp(.95rem, 1.25vw, 1.08rem);
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .detail {
+      display: none;
+      min-height: 100svh;
+      padding: 0;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .detail.is-visible {
+      display: block;
+    }
+
+    .detail-inner {
+      width: 100%;
+      min-height: 100svh;
+      margin: 0 auto;
+      display: grid;
+      grid-template-rows: 14svh 86svh;
+      gap: 0;
+    }
+
+    .detail-place {
+      width: min(980px, calc(100% - 36px));
+      margin: 0 auto;
+      font-size: clamp(1.9rem, 3.6vw, 3.8rem);
+      line-height: 1.2;
+      font-weight: 900;
+      letter-spacing: 0;
+      display: grid;
+      align-items: center;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .photo-track {
+      height: 100%;
+      min-height: 0;
+      display: flex;
+      align-items: stretch;
+      gap: 36px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: none;
+      scrollbar-width: none;
+      padding: 0 max(24px, calc(50vw - 310px)) 18px;
+    }
+
+    .photo-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .photo-card {
+      flex: 0 0 min(620px, calc(100vw - 56px));
+      height: 100%;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      scroll-snap-align: center;
+      display: grid;
+      grid-template-rows: minmax(0, 1fr) 58px;
+      gap: 8px;
+      overflow: visible;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      object-fit: contain;
+      display: block;
+      background: transparent;
+      border-radius: 8px;
+    }
+
+    .photo-copy {
+      min-width: 0;
+      min-height: 58px;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      align-content: center;
+      justify-items: center;
+      gap: 4px;
+      padding: 0 12px;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      text-align: center;
+    }
+
+    .photo-time {
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.2;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .photo-text {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.35;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    @media (max-width: 760px) {
+      .rail {
+        gap: 28px;
+        padding-inline: max(9vw, calc(50vw - 41vw));
+      }
+
+      .trip-node {
+        width: 82vw;
+        min-height: 360px;
+      }
+
+      .photo-stack {
+        width: min(320px, 68vw);
+        height: min(230px, 42vw);
+      }
+
+      .trip-node:hover .frame-1,
+      .trip-node:focus-visible .frame-1,
+      .trip-node.is-focused .frame-1,
+      .trip-node.is-selected .frame-1,
+      .trip-node.is-hovered .frame-1 {
+        transform: translate(-44px, 4px) rotate(-8deg);
+      }
+
+      .trip-node:hover .frame-3,
+      .trip-node:focus-visible .frame-3,
+      .trip-node.is-focused .frame-3,
+      .trip-node.is-selected .frame-3,
+      .trip-node.is-hovered .frame-3 {
+        transform: translate(44px, 4px) rotate(8deg);
+      }
+
+      .photo-track {
+        gap: 18px;
+        padding: 0 9vw 22px;
+      }
+
+      .photo-card {
+        flex-basis: 82vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient" id="ambient" aria-hidden="true"></div>
+  <main>
+    <section class="overview" id="overview" aria-label="旅行地点">
+      <div class="stage" id="stage">
+        <div class="rail" id="rail"></div>
+      </div>
+    </section>
+    <section class="detail" id="detail" aria-label="照片说明">
+      <div class="detail-inner" id="detailInner"></div>
+    </section>
+  </main>
+
+  <script>
+    const fallbackData = {
+      trips: [
+        {
+          place: "北京",
+          images: ["assets/photos/beijing.jpg", "assets/photos/beijing-2.jpg", "assets/photos/beijing-3.jpg"],
+          photos: [
+            { src: "assets/photos/beijing.jpg", time: "2026.05.18", text: "傍晚的水边，光线从柳树枝叶里落下来。" },
+            { src: "assets/photos/beijing-2.jpg", time: "2026.05.18", text: "城市里最安静的一段路，适合慢慢走。" },
+            { src: "assets/photos/beijing-3.jpg", time: "2026.05.19", text: "离开前回头看了一眼，记住这次短暂停留。" }
+          ]
+        }
+      ]
+    };
+
+    const state = {
+      trips: [],
+      activeIndex: 0,
+      selectedIndex: null,
+      detailOpen: false,
+      targetScrollLeft: 0,
+      detailTargetScrollLeft: 0,
+      railFrame: 0,
+      detailFrame: 0,
+      ticking: false,
+      openFrame: 0,
+      centeringSelected: false,
+      mouseX: 0,
+      mouseY: 0
+    };
+
+    const els = {
+      ambient: document.querySelector("#ambient"),
+      overview: document.querySelector("#overview"),
+      stage: document.querySelector("#stage"),
+      rail: document.querySelector("#rail"),
+      detail: document.querySelector("#detail"),
+      detailInner: document.querySelector("#detailInner")
+    };
+
+    function cleanList(value) {
+      if (!value) return [];
+      if (Array.isArray(value)) return value.filter(Boolean);
+      return String(value).split(",").map(item => item.trim()).filter(Boolean);
+    }
+
+    function normalizeTrip(trip, index) {
+      const images = cleanList(trip.images).length ? cleanList(trip.images) : cleanList(trip.image);
+      const safeImages = images.length ? images : ["assets/photos/beijing.jpg"];
+      const photos = Array.isArray(trip.photos) && trip.photos.length
+        ? trip.photos.map((photo, photoIndex) => ({
+          src: photo.src || safeImages[photoIndex % safeImages.length],
+          time: photo.time || photo.date || trip.date || "",
+          text: photo.text || photo.caption || trip.summary || ""
+        }))
+        : [0, 1, 2].map(photoIndex => ({
+          src: safeImages[photoIndex % safeImages.length],
+          time: trip.date || "",
+          text: trip.summary || ""
+        }));
+      const timeValues = photos.map(photo => photo.time).filter(Boolean);
+      const dateLabel = trip.date || trip.time || (
+        timeValues.length
+          ? timeValues[0] === timeValues[timeValues.length - 1]
+            ? timeValues[0]
+            : `${timeValues[0]} - ${timeValues[timeValues.length - 1]}`
+          : ""
+      );
+
+      return {
+        id: trip.id || `trip-${index + 1}`,
+        place: trip.place || "未命名地点",
+        dateLabel,
+        images: [0, 1, 2].map(imageIndex => safeImages[imageIndex % safeImages.length]),
+        photos: photos.slice(0, 3)
+      };
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function renderRail() {
+      els.rail.innerHTML = state.trips.map((trip, index) => {
+        const frames = trip.images.map((image, imageIndex) => `
+          <figure class="photo-frame frame-${imageIndex + 1}">
+            <img src="${escapeHtml(image)}" alt="${escapeHtml(trip.place)} ${imageIndex + 1}" loading="${index < 2 ? "eager" : "lazy"}" decoding="async">
+          </figure>
+        `).join("");
+
+        return `
+          <button class="trip-node" type="button" data-index="${index}" aria-current="${index === state.activeIndex}">
+            <p class="place">${escapeHtml(trip.place)}</p>
+            <div class="photo-stack">${frames}</div>
+            <p class="trip-time">${escapeHtml(trip.dateLabel || "")}</p>
+          </button>
+        `;
+      }).join("");
+
+      els.rail.querySelectorAll(".trip-node").forEach(node => {
+        node.addEventListener("click", () => selectTrip(Number(node.dataset.index)));
+        node.addEventListener("pointerenter", () => node.classList.add("is-hovered"));
+        node.addEventListener("pointerleave", () => node.classList.remove("is-hovered"));
+      });
+    }
+
+    function updateHoveredNode(x, y) {
+      const hoveredNode = document.elementFromPoint(x, y)?.closest(".trip-node");
+      els.rail.querySelectorAll(".trip-node").forEach(node => {
+        node.classList.toggle("is-hovered", node === hoveredNode);
+      });
+    }
+
+    function renderDetail() {
+      const tripIndex = state.selectedIndex ?? state.activeIndex;
+      const trip = state.trips[tripIndex];
+      els.detail.classList.toggle("is-visible", state.detailOpen && Boolean(trip));
+      els.detail.setAttribute("aria-hidden", String(!state.detailOpen || !trip));
+
+      if (!state.detailOpen || !trip) {
+        els.detailInner.innerHTML = "";
+        return;
+      }
+
+      els.detailInner.innerHTML = `
+        <h2 class="detail-place">${escapeHtml(trip.place)}</h2>
+        <div class="photo-track" aria-label="${escapeHtml(trip.place)}照片">
+          ${trip.photos.map(photo => `
+            <article class="photo-card">
+            <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(trip.place)}" loading="lazy" decoding="async">
+            <div class="photo-copy">
+              <span class="photo-time">${escapeHtml(photo.time)}</span>
+              <p class="photo-text">${escapeHtml(photo.text)}</p>
+            </div>
+            </article>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function clampScrollLeft(value) {
+      const maxLeft = Math.max(0, els.stage.scrollWidth - els.stage.clientWidth);
+      return Math.max(0, Math.min(value, maxLeft));
+    }
+
+    function scrollLeftForTrip(index) {
+      const node = els.rail.querySelector(`.trip-node[data-index="${index}"]`);
+      if (!node) return els.stage.scrollLeft;
+      const stageRect = els.stage.getBoundingClientRect();
+      const nodeRect = node.getBoundingClientRect();
+      const nodeCenter = nodeRect.left + nodeRect.width / 2;
+      const stageCenter = stageRect.left + stageRect.width / 2;
+      return clampScrollLeft(els.stage.scrollLeft + nodeCenter - stageCenter);
+    }
+
+    function updateFocus() {
+      const nodes = Array.from(els.rail.querySelectorAll(".trip-node"));
+      if (!nodes.length) return;
+
+      const stageRect = els.stage.getBoundingClientRect();
+      const centerX = stageRect.left + stageRect.width / 2;
+      const fadeRange = Math.max(1, stageRect.width * .48);
+      let bestIndex = 0;
+      let bestDistance = Number.POSITIVE_INFINITY;
+      const measurements = nodes.map((node, index) => {
+        const rect = node.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - centerX);
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          bestIndex = index;
+        }
+        return { node, index, distance };
+      });
+
+      const nearTop = window.scrollY < 12;
+      if (nearTop && bestIndex !== state.activeIndex) {
+        state.activeIndex = bestIndex;
+        updateAmbient();
+      }
+
+      const selectedMeasurement = measurements.find(item => item.index === state.selectedIndex);
+      const selectedAwayFromCenter = selectedMeasurement && selectedMeasurement.distance > Math.min(96, stageRect.width * .08);
+      if (nearTop && !state.centeringSelected && state.selectedIndex !== null && (bestIndex !== state.selectedIndex || selectedAwayFromCenter)) {
+        closeDetail({ scrollTop: false, refreshFocus: false });
+      }
+
+      measurements.forEach(({ node, index, distance }) => {
+        const focus = Math.max(0, 1 - distance / fadeRange);
+        const eased = Math.pow(focus, .72);
+        node.style.setProperty("--node-opacity", String(.1 + eased * .9));
+        node.style.setProperty("--node-scale", String(.78 + eased * .26));
+        node.classList.toggle("is-focused", state.selectedIndex === null && index === state.activeIndex && nearTop);
+        node.classList.toggle("is-selected", index === state.selectedIndex);
+        node.setAttribute("aria-current", String(index === state.activeIndex));
+      });
+    }
+
+    function updateAmbient() {
+      const trip = state.trips[state.activeIndex];
+      if (!trip) return;
+      els.ambient.style.setProperty("--ambient-image", `url("${trip.images[0]}")`);
+    }
+
+    function flushRailScroll() {
+      els.stage.scrollLeft = state.targetScrollLeft;
+      state.railFrame = 0;
+    }
+
+    function glideTo(left, behavior = "auto") {
+      state.targetScrollLeft = clampScrollLeft(left);
+      if (behavior === "smooth") {
+        els.stage.scrollTo({ left: state.targetScrollLeft, behavior: "smooth" });
+        return;
+      }
+      if (!state.railFrame) state.railFrame = requestAnimationFrame(flushRailScroll);
+    }
+
+    function normalizeWheelDelta(event) {
+      const primaryDelta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+      const modeFactor = event.deltaMode === 1 ? 24 : event.deltaMode === 2 ? els.stage.clientWidth : 1;
+      const pixelDelta = primaryDelta * modeFactor;
+      return Math.max(-220, Math.min(pixelDelta, 220));
+    }
+
+    function isInRailZone(event) {
+      const y = Number.isFinite(event.clientY) ? event.clientY : state.mouseY;
+      return y >= window.innerHeight / 6 && y <= window.innerHeight * 5 / 6;
+    }
+
+    function selectTrip(index = state.activeIndex) {
+      window.clearTimeout(state.openFrame);
+      const nextIndex = Math.max(0, Math.min(index, state.trips.length - 1));
+      state.activeIndex = nextIndex;
+      state.selectedIndex = state.activeIndex;
+      state.detailOpen = true;
+      state.centeringSelected = true;
+      state.detailTargetScrollLeft = 0;
+      updateAmbient();
+      renderDetail();
+      requestAnimationFrame(() => {
+        glideTo(scrollLeftForTrip(state.activeIndex), "smooth");
+        window.scrollTo({ top: els.detail.offsetTop, behavior: "smooth" });
+        state.openFrame = window.setTimeout(() => {
+          state.centeringSelected = false;
+          updateFocus();
+        }, 700);
+      });
+    }
+
+    function closeDetail({ scrollTop = false, refreshFocus = true } = {}) {
+      window.clearTimeout(state.openFrame);
+      state.centeringSelected = false;
+      state.detailOpen = false;
+      state.selectedIndex = null;
+      state.detailTargetScrollLeft = 0;
+      renderDetail();
+      if (refreshFocus) updateFocus();
+      if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function scrollDetailTrack(delta = 0) {
+      const track = els.detail.querySelector(".photo-track");
+      if (!track) return;
+      const maxLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+      const base = state.detailFrame ? state.detailTargetScrollLeft : track.scrollLeft;
+      state.detailTargetScrollLeft = Math.max(0, Math.min(base + delta, maxLeft));
+      if (!state.detailFrame) {
+        state.detailFrame = requestAnimationFrame(() => {
+          track.scrollLeft = state.detailTargetScrollLeft;
+          state.detailFrame = 0;
+        });
+      }
+    }
+
+    function bindEvents() {
+      window.addEventListener("mousemove", event => {
+        state.mouseX = event.clientX;
+        state.mouseY = event.clientY;
+        updateHoveredNode(event.clientX, event.clientY);
+      });
+
+      els.detail.addEventListener("wheel", event => {
+        const target = event.target instanceof Element ? event.target : null;
+        const track = target?.closest(".photo-track");
+        const inPhotoTrack = track && els.detail.contains(track);
+        const inDetailView = state.detailOpen && window.scrollY >= els.detail.offsetTop - 12;
+        if (!inPhotoTrack || !inDetailView) return;
+        const delta = normalizeWheelDelta(event);
+        if (delta < 0 && track.scrollLeft <= 2) return;
+        event.preventDefault();
+        event.stopPropagation();
+        scrollDetailTrack(delta);
+      }, { passive: false });
+
+      window.addEventListener("wheel", event => {
+        const nearTop = window.scrollY < 12;
+        if (nearTop && isInRailZone(event)) {
+          event.preventDefault();
+          state.centeringSelected = false;
+          const delta = normalizeWheelDelta(event);
+          const base = state.railFrame ? state.targetScrollLeft : els.stage.scrollLeft;
+          glideTo(base + delta);
+          return;
+        }
+
+        if (state.detailOpen && nearTop && event.deltaY > 0) {
+          return;
+        }
+      }, { passive: false });
+
+      els.stage.addEventListener("scroll", () => {
+        if (state.ticking) return;
+        state.ticking = true;
+        requestAnimationFrame(() => {
+          updateFocus();
+          updateHoveredNode(state.mouseX, state.mouseY);
+          state.ticking = false;
+        });
+      });
+
+      window.addEventListener("scroll", () => {
+        updateFocus();
+      });
+      window.addEventListener("resize", updateFocus);
+    }
+
+    async function loadData() {
+      let data = fallbackData;
+      try {
+        const response = await fetch("data/trips.json", { cache: "no-store" });
+        if (response.ok) data = await response.json();
+      } catch (error) {
+        data = fallbackData;
+      }
+
+      state.trips = (data.trips || []).map(normalizeTrip);
+      renderRail();
+      renderDetail();
+      updateAmbient();
+      requestAnimationFrame(updateFocus);
+    }
+
+    bindEvents();
+    loadData();
+  </script>
+</body>
+</html>
+

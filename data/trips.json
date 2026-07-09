@@ -1,0 +1,108 @@
+{
+  "trips": [
+    {
+      "id": "beijing-2026",
+      "place": "北京",
+      "images": [
+        "assets/photos/beijing.jpg",
+        "assets/photos/beijing-2.jpg",
+        "assets/photos/beijing-3.jpg"
+      ],
+      "photos": [
+        {
+          "src": "assets/photos/beijing.jpg",
+          "time": "2026.05.18",
+          "text": "傍晚的水边，光线从柳树枝叶里落下来。"
+        },
+        {
+          "src": "assets/photos/beijing-2.jpg",
+          "time": "2026.05.18",
+          "text": "城市里最安静的一段路，适合慢慢走。"
+        },
+        {
+          "src": "assets/photos/beijing-3.jpg",
+          "time": "2026.05.19",
+          "text": "离开前回头看了一眼，记住这次短暂停留。"
+        }
+      ]
+    },
+    {
+      "id": "daocheng-yading-2026",
+      "place": "稻城亚丁",
+      "images": [
+        "assets/photos/sichuan.jpg",
+        "assets/photos/sichuan-2.jpg",
+        "assets/photos/west-sichuan-2.jpg"
+      ],
+      "photos": [
+        {
+          "src": "assets/photos/sichuan.jpg",
+          "time": "2026.04.06",
+          "text": "高海拔的湖面很安静，走到这里时风很大。"
+        },
+        {
+          "src": "assets/photos/sichuan-2.jpg",
+          "time": "2026.04.07",
+          "text": "雪山在云后露出来的一瞬间，整段路都值得了。"
+        },
+        {
+          "src": "assets/photos/west-sichuan-2.jpg",
+          "time": "2026.04.08",
+          "text": "回程路上看见连续的山谷和公路。"
+        }
+      ]
+    },
+    {
+      "id": "qingdao-2025",
+      "place": "青岛",
+      "images": [
+        "assets/photos/qingdao.jpg",
+        "assets/photos/qingdao-2.jpg",
+        "assets/photos/qingdao-3.jpg"
+      ],
+      "photos": [
+        {
+          "src": "assets/photos/qingdao.jpg",
+          "time": "2025.09.12",
+          "text": "海边日落很慢，适合在岸边多站一会。"
+        },
+        {
+          "src": "assets/photos/qingdao-2.jpg",
+          "time": "2025.09.13",
+          "text": "短途旅行里最舒服的一段，是没有目的地地走。"
+        },
+        {
+          "src": "assets/photos/qingdao-3.jpg",
+          "time": "2025.09.13",
+          "text": "把海风和城市的颜色留在这一张里。"
+        }
+      ]
+    },
+    {
+      "id": "west-sichuan-2026-plan",
+      "place": "川西环线",
+      "images": [
+        "assets/photos/west-sichuan.jpg",
+        "assets/photos/west-sichuan-2.jpg",
+        "assets/photos/sichuan-2.jpg"
+      ],
+      "photos": [
+        {
+          "src": "assets/photos/west-sichuan.jpg",
+          "time": "2026.10.01",
+          "text": "计划里的第一张图，想从雪山和湖开始。"
+        },
+        {
+          "src": "assets/photos/west-sichuan-2.jpg",
+          "time": "2026.10.02",
+          "text": "如果天气好，就把一天都留给山路。"
+        },
+        {
+          "src": "assets/photos/sichuan-2.jpg",
+          "time": "2026.10.03",
+          "text": "这条路线最想记录的是路上的层次和光线。"
+        }
+      ]
+    }
+  ]
+}
