@@ -230,6 +230,9 @@
       display: grid;
       grid-template-rows: 14svh 86svh;
       gap: 0;
+      opacity: var(--detail-opacity, 1);
+      transition: opacity .12s linear;
+      will-change: opacity;
     }
 
     .detail-place {
@@ -246,17 +249,24 @@
     }
 
     .photo-track {
+      --photo-slot: clamp(280px, 18vw, 350px);
+      --photo-visual: min(clamp(440px, 27vw, 520px), calc(100vw - 56px));
+      --track-pad-start: max(24px, calc(50vw - var(--photo-slot) / 2));
+      --track-pad-end: max(24px, calc(50vw - var(--photo-slot) / 2));
       height: 100%;
       min-height: 0;
       display: flex;
       align-items: stretch;
-      gap: 36px;
+      gap: clamp(48px, 3.2vw, 68px);
       overflow-x: auto;
       overflow-y: hidden;
       overscroll-behavior-x: contain;
       scroll-snap-type: none;
       scrollbar-width: none;
-      padding: 0 max(24px, calc(50vw - 310px)) 18px;
+      padding: 0 var(--track-pad-end) 18px var(--track-pad-start);
+      cursor: pointer;
+      perspective: 1400px;
+      perspective-origin: 50% 45%;
     }
 
     .photo-track::-webkit-scrollbar {
@@ -264,32 +274,75 @@
     }
 
     .photo-card {
-      flex: 0 0 min(620px, calc(100vw - 56px));
+      --card-scale: .42;
+      --card-max-width: 220px;
+      --card-max-height: 220px;
+      --card-layout-width: 220px;
+      --card-tilt: 0deg;
+      --card-depth: 0px;
+      --card-z: 0;
+      flex: 0 0 var(--card-layout-width);
+      width: var(--card-layout-width);
       height: 100%;
+      min-width: 0;
       min-height: 0;
       border: 0;
       border-radius: 0;
       background: transparent;
       scroll-snap-align: center;
-      display: grid;
-      grid-template-rows: minmax(0, 1fr) 58px;
-      gap: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
       overflow: visible;
+      z-index: var(--card-z);
+      cursor: pointer;
+      transition: width .18s cubic-bezier(.2, .86, .28, 1), flex-basis .18s cubic-bezier(.2, .86, .28, 1);
     }
 
-    .photo-card img {
-      width: 100%;
-      height: 100%;
+    .photo-track.is-animating .photo-card,
+    .photo-track.is-animating .photo-media,
+    .photo-track.is-animating .photo-media img,
+    .photo-track.is-animating .photo-copy {
+      transition: none;
+    }
+
+    .photo-media {
+      width: var(--card-layout-width);
+      height: auto;
+      min-width: 0;
       min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      transform: translateZ(var(--card-depth)) rotateY(var(--card-tilt));
+      transform-origin: center center;
+      transform-style: preserve-3d;
+      backface-visibility: hidden;
+      will-change: width, transform;
+      transition: width .2s cubic-bezier(.2, .86, .28, 1), transform .28s cubic-bezier(.2, .86, .28, 1);
+    }
+
+    .photo-media img {
+      width: auto;
+      height: auto;
+      min-height: 0;
+      max-width: var(--card-max-width);
+      max-height: var(--card-max-height);
       object-fit: contain;
       display: block;
       background: transparent;
-      border-radius: 8px;
+      border-radius: 0;
+      backface-visibility: hidden;
+      transition: max-width .2s cubic-bezier(.2, .86, .28, 1), max-height .2s cubic-bezier(.2, .86, .28, 1);
     }
 
     .photo-copy {
+      width: min(var(--card-layout-width), calc(100vw - 48px));
+      justify-self: center;
       min-width: 0;
-      min-height: 58px;
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
       align-content: center;
@@ -300,6 +353,7 @@
       border: 0;
       border-radius: 0;
       text-align: center;
+      transition: width .18s cubic-bezier(.2, .86, .28, 1);
     }
 
     .photo-time {
@@ -354,12 +408,14 @@
       }
 
       .photo-track {
-        gap: 18px;
+        --photo-slot: 82vw;
+        --photo-visual: calc(100vw - 48px);
+        gap: 24px;
         padding: 0 9vw 22px;
       }
 
       .photo-card {
-        flex-basis: 82vw;
+        flex-basis: var(--card-layout-width);
       }
     }
   </style>
@@ -396,11 +452,19 @@
       trips: [],
       activeIndex: 0,
       selectedIndex: null,
+      detailFocusIndex: null,
       detailOpen: false,
       targetScrollLeft: 0,
       detailTargetScrollLeft: 0,
       railFrame: 0,
       detailFrame: 0,
+      pageFrame: 0,
+      railMotion: "idle",
+      railCloseOnDrift: false,
+      detailMotion: "idle",
+      detailFocusTimer: 0,
+      detailClickProgress: 1,
+      detailStartVisuals: [],
       ticking: false,
       openFrame: 0,
       centeringSelected: false,
@@ -415,6 +479,15 @@
       rail: document.querySelector("#rail"),
       detail: document.querySelector("#detail"),
       detailInner: document.querySelector("#detailInner")
+    };
+
+    const MOTION = {
+      tripClickMs: 760,
+      photoClickMs: 550,
+      wheelFollow: .24,
+      settlePx: .55,
+      photoTiltDeg: 7,
+      photoDepthPx: 22
     };
 
     function cleanList(value) {
@@ -437,6 +510,8 @@
           time: trip.date || "",
           text: trip.summary || ""
         }));
+      const coverImages = images.length ? images : photos.map(photo => photo.src).filter(Boolean);
+      const safeCoverImages = coverImages.length ? coverImages : safeImages;
       const timeValues = photos.map(photo => photo.time).filter(Boolean);
       const dateLabel = trip.date || trip.time || (
         timeValues.length
@@ -450,8 +525,8 @@
         id: trip.id || `trip-${index + 1}`,
         place: trip.place || "未命名地点",
         dateLabel,
-        images: [0, 1, 2].map(imageIndex => safeImages[imageIndex % safeImages.length]),
-        photos: photos.slice(0, 3)
+        images: [0, 1, 2].map(imageIndex => safeCoverImages[imageIndex % safeCoverImages.length]),
+        photos: photos.slice(0, 5)
       };
     }
 
@@ -462,6 +537,15 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+    }
+
+    function clamp01(value) {
+      return Math.max(0, Math.min(value, 1));
+    }
+
+    function smooth01(value) {
+      const t = clamp01(value);
+      return t * t * (3 - 2 * t);
     }
 
     function renderRail() {
@@ -509,9 +593,11 @@
       els.detailInner.innerHTML = `
         <h2 class="detail-place">${escapeHtml(trip.place)}</h2>
         <div class="photo-track" aria-label="${escapeHtml(trip.place)}照片">
-          ${trip.photos.map(photo => `
-            <article class="photo-card">
-            <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(trip.place)}" loading="lazy" decoding="async">
+          ${trip.photos.map((photo, photoIndex) => `
+            <article class="photo-card" data-photo-index="${photoIndex}" aria-label="${escapeHtml([trip.place, photo.time].filter(Boolean).join(" "))}">
+            <div class="photo-media">
+              <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(trip.place)}" loading="lazy" decoding="async">
+            </div>
             <div class="photo-copy">
               <span class="photo-time">${escapeHtml(photo.time)}</span>
               <p class="photo-text">${escapeHtml(photo.text)}</p>
@@ -520,6 +606,226 @@
           `).join("")}
         </div>
       `;
+
+      const track = els.detail.querySelector(".photo-track");
+      track?.addEventListener("scroll", updateDetailCards, { passive: true });
+      track?.addEventListener("click", event => {
+        const card = closestDetailCardToX(track, event.clientX);
+        if (card) centerDetailCard(card);
+      });
+      track?.querySelectorAll("img").forEach(img => {
+        if (img.complete) return;
+        img.addEventListener("load", updateDetailVisuals, { once: true });
+      });
+      requestAnimationFrame(updateDetailVisuals);
+    }
+
+    function updateDetailProgress() {
+      if (!state.detailOpen) {
+        els.detail.style.setProperty("--detail-opacity", "1");
+        return;
+      }
+
+      const detailStart = Math.max(1, els.detail.offsetTop);
+      const progress = clamp01(window.scrollY / detailStart);
+      const eased = Math.pow(progress, .82);
+      els.detail.style.setProperty("--detail-opacity", String(eased));
+    }
+
+    function updateDetailCards() {
+      const track = els.detail.querySelector(".photo-track");
+      if (!track) return;
+
+      const trackRect = track.getBoundingClientRect();
+      const centerX = trackRect.left + trackRect.width / 2;
+      const baseWidth = Math.min(Math.max(window.innerWidth * .27, 440), 520, window.innerWidth - 56);
+      const baseHeight = Math.max(160, trackRect.height - 86);
+      const cards = Array.from(track.querySelectorAll(".photo-card"));
+      const focusIndex = Number.isInteger(state.detailFocusIndex)
+        ? Math.max(0, Math.min(state.detailFocusIndex, cards.length - 1))
+        : null;
+      const focusRange = Math.max(1, trackRect.width * .62);
+      const layoutWidths = [];
+
+      cards.forEach((card, index) => {
+        const img = card.querySelector("img");
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const signedDistance = cardCenter - centerX;
+        const distance = Math.abs(signedDistance);
+        const manualFocus = clamp01(1 - distance / focusRange);
+        const manualSide = Math.max(-1, Math.min(signedDistance / (focusRange * .55), 1));
+        let focus = manualFocus;
+        let side = manualSide;
+
+        if (focusIndex !== null) {
+          const signedSteps = index - focusIndex;
+          const stepDistance = Math.abs(signedSteps);
+          const lockedFocus = stepDistance === 0 ? 1 : clamp01(1 - stepDistance / 2.35);
+          const lockedSide = Math.max(-1, Math.min(signedSteps, 1));
+          const blend = clamp01(state.detailClickProgress);
+          const startVisual = state.detailStartVisuals[index];
+          const startFocus = startVisual ? startVisual.focus : manualFocus;
+          const startSide = startVisual ? startVisual.side : manualSide;
+          focus = startFocus + (lockedFocus - startFocus) * blend;
+          side = startSide + (lockedSide - startSide) * blend;
+        }
+
+        const scale = .42 + focus * .58;
+        const tilt = -side * (1 - focus) * MOTION.photoTiltDeg;
+        const depth = -MOTION.photoDepthPx * (1 - focus);
+        const naturalWidth = img?.naturalWidth || baseWidth;
+        const naturalHeight = img?.naturalHeight || baseHeight;
+        const ratio = naturalWidth / Math.max(1, naturalHeight);
+        const maxWidth = Math.max(96, baseWidth * scale);
+        const maxHeight = Math.max(96, baseHeight * scale);
+        const layoutWidth = Math.max(96, Math.min(maxWidth, maxHeight * ratio));
+        layoutWidths[index] = layoutWidth;
+
+        card.style.setProperty("--card-scale", String(scale));
+        card.style.setProperty("--card-max-width", `${maxWidth}px`);
+        card.style.setProperty("--card-max-height", `${maxHeight}px`);
+        card.style.setProperty("--card-layout-width", `${layoutWidth}px`);
+        card.style.setProperty("--card-tilt", `${tilt.toFixed(2)}deg`);
+        card.style.setProperty("--card-depth", `${depth.toFixed(2)}px`);
+        card.style.setProperty("--card-z", String(Math.round(scale * 100)));
+      });
+
+      const firstWidth = layoutWidths[0] || baseWidth;
+      const lastWidth = layoutWidths[layoutWidths.length - 1] || firstWidth;
+      track.style.setProperty("--track-pad-start", `${Math.max(24, window.innerWidth / 2 - firstWidth / 2)}px`);
+      track.style.setProperty("--track-pad-end", `${Math.max(24, window.innerWidth / 2 - lastWidth / 2)}px`);
+    }
+
+    function updateDetailVisuals() {
+      updateDetailProgress();
+      updateDetailCards();
+    }
+
+    function captureDetailStartVisuals(track) {
+      return Array.from(track.querySelectorAll(".photo-card")).map(card => {
+        const style = getComputedStyle(card);
+        const scale = Number(style.getPropertyValue("--card-scale")) || .42;
+        const focus = clamp01((scale - .42) / .58);
+        const tilt = parseFloat(style.getPropertyValue("--card-tilt")) || 0;
+        const side = Math.abs(1 - focus) > .001
+          ? Math.max(-1, Math.min(-tilt / ((1 - focus) * MOTION.photoTiltDeg), 1))
+          : 0;
+
+        return { focus, side };
+      });
+    }
+
+    function clearDetailFocusLock({ refresh = true } = {}) {
+      window.clearTimeout(state.detailFocusTimer);
+      state.detailFocusTimer = 0;
+      if (state.detailFrame) {
+        cancelAnimationFrame(state.detailFrame);
+        state.detailFrame = 0;
+      }
+      state.detailMotion = "idle";
+      els.detail.querySelector(".photo-track")?.classList.remove("is-animating");
+      state.detailFocusIndex = null;
+      state.detailClickProgress = 1;
+      state.detailStartVisuals = [];
+      if (refresh) updateDetailCards();
+    }
+
+    function centerDetailCard(card, behavior = "smooth") {
+      const track = els.detail.querySelector(".photo-track");
+      if (!track || !card) return;
+
+      if (state.detailFrame) {
+        cancelAnimationFrame(state.detailFrame);
+        state.detailFrame = 0;
+      }
+
+      const targetIndex = Number(card.dataset.photoIndex);
+      if (!Number.isInteger(targetIndex)) return;
+      state.detailMotion = "click";
+
+      window.clearTimeout(state.detailFocusTimer);
+      updateDetailCards();
+      state.detailStartVisuals = captureDetailStartVisuals(track);
+      state.detailFocusIndex = targetIndex;
+      state.detailClickProgress = 0;
+      track.classList.add("is-animating");
+
+      const startLeft = track.scrollLeft;
+      const duration = behavior === "auto" ? 1 : MOTION.photoClickMs;
+      const startedAt = performance.now();
+      const smoothStep = value => value * value * (3 - 2 * value);
+
+      const step = now => {
+        if (state.detailMotion !== "click" || !state.detailOpen || state.detailFocusIndex !== targetIndex) {
+          track.classList.remove("is-animating");
+          state.detailFrame = 0;
+          return;
+        }
+
+        const progress = clamp01((now - startedAt) / duration);
+        state.detailClickProgress = progress;
+        updateDetailCards();
+
+        const focusedCard = track.querySelector(`.photo-card[data-photo-index="${targetIndex}"]`);
+        if (!focusedCard) {
+          track.classList.remove("is-animating");
+          state.detailFrame = 0;
+          return;
+        }
+
+        const trackRect = track.getBoundingClientRect();
+        const cardRect = focusedCard.getBoundingClientRect();
+        const trackCenter = trackRect.left + trackRect.width / 2;
+        const cardCenter = cardRect.left + cardRect.width / 2;
+        const maxLeft = Math.max(0, track.scrollWidth - track.clientWidth);
+        const targetLeft = Math.max(0, Math.min(track.scrollLeft + cardCenter - trackCenter, maxLeft));
+        const scrollProgress = smoothStep(progress);
+        const nextLeft = startLeft + (targetLeft - startLeft) * scrollProgress;
+
+        state.detailTargetScrollLeft = nextLeft;
+        track.scrollLeft = nextLeft;
+        updateDetailCards();
+
+        if (progress < 1) {
+          state.detailFrame = requestAnimationFrame(step);
+          return;
+        }
+
+        state.detailClickProgress = 1;
+        updateDetailCards();
+        const finalRect = focusedCard.getBoundingClientRect();
+        const finalTrackRect = track.getBoundingClientRect();
+        const finalLeft = Math.max(0, Math.min(
+          track.scrollLeft + finalRect.left + finalRect.width / 2 - (finalTrackRect.left + finalTrackRect.width / 2),
+          Math.max(0, track.scrollWidth - track.clientWidth)
+        ));
+        state.detailTargetScrollLeft = finalLeft;
+        track.scrollLeft = finalLeft;
+        state.detailStartVisuals = [];
+        updateDetailCards();
+        track.classList.remove("is-animating");
+        state.detailFrame = 0;
+        state.detailMotion = "idle";
+      };
+
+      state.detailFrame = requestAnimationFrame(step);
+    }
+
+    function closestDetailCardToX(track, clientX) {
+      let closestCard = null;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      track.querySelectorAll(".photo-card").forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const distance = Math.abs(rect.left + rect.width / 2 - clientX);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestCard = card;
+        }
+      });
+
+      return closestCard;
     }
 
     function clampScrollLeft(value) {
@@ -556,15 +862,16 @@
         return { node, index, distance };
       });
 
-      const nearTop = window.scrollY < 12;
-      if (nearTop && bestIndex !== state.activeIndex) {
+      const overviewVisible = stageRect.bottom > 0 && stageRect.top < window.innerHeight;
+      if (overviewVisible && !state.centeringSelected && bestIndex !== state.activeIndex) {
         state.activeIndex = bestIndex;
         updateAmbient();
       }
 
       const selectedMeasurement = measurements.find(item => item.index === state.selectedIndex);
       const selectedAwayFromCenter = selectedMeasurement && selectedMeasurement.distance > Math.min(96, stageRect.width * .08);
-      if (nearTop && !state.centeringSelected && state.selectedIndex !== null && (bestIndex !== state.selectedIndex || selectedAwayFromCenter)) {
+      if (state.railCloseOnDrift && !state.centeringSelected && state.selectedIndex !== null && (bestIndex !== state.selectedIndex || selectedAwayFromCenter)) {
+        state.railCloseOnDrift = false;
         closeDetail({ scrollTop: false, refreshFocus: false });
       }
 
@@ -573,7 +880,7 @@
         const eased = Math.pow(focus, .72);
         node.style.setProperty("--node-opacity", String(.1 + eased * .9));
         node.style.setProperty("--node-scale", String(.78 + eased * .26));
-        node.classList.toggle("is-focused", state.selectedIndex === null && index === state.activeIndex && nearTop);
+        node.classList.toggle("is-focused", state.selectedIndex === null && index === state.activeIndex && overviewVisible);
         node.classList.toggle("is-selected", index === state.selectedIndex);
         node.setAttribute("aria-current", String(index === state.activeIndex));
       });
@@ -585,18 +892,106 @@
       els.ambient.style.setProperty("--ambient-image", `url("${trip.images[0]}")`);
     }
 
+    function stopRailMotion() {
+      if (state.railFrame) {
+        cancelAnimationFrame(state.railFrame);
+        state.railFrame = 0;
+      }
+      state.railMotion = "idle";
+    }
+
     function flushRailScroll() {
-      els.stage.scrollLeft = state.targetScrollLeft;
-      state.railFrame = 0;
+      if (state.railMotion !== "follow") {
+        state.railFrame = 0;
+        return;
+      }
+
+      const distance = state.targetScrollLeft - els.stage.scrollLeft;
+      if (Math.abs(distance) <= MOTION.settlePx) {
+        els.stage.scrollLeft = state.targetScrollLeft;
+        state.railFrame = 0;
+        state.railMotion = "idle";
+        updateFocus();
+        return;
+      }
+
+      els.stage.scrollLeft += distance * MOTION.wheelFollow;
+      updateFocus();
+      state.railFrame = requestAnimationFrame(flushRailScroll);
+    }
+
+    function animateRailTo(left, duration = MOTION.tripClickMs) {
+      stopRailMotion();
+      const startLeft = els.stage.scrollLeft;
+      const targetLeft = clampScrollLeft(left);
+      const startedAt = performance.now();
+      state.targetScrollLeft = targetLeft;
+      state.railMotion = "animate";
+
+      const step = now => {
+        if (state.railMotion !== "animate") {
+          state.railFrame = 0;
+          return;
+        }
+
+        const progress = smooth01((now - startedAt) / duration);
+        els.stage.scrollLeft = startLeft + (targetLeft - startLeft) * progress;
+        updateFocus();
+
+        if (progress < 1) {
+          state.railFrame = requestAnimationFrame(step);
+          return;
+        }
+
+        els.stage.scrollLeft = targetLeft;
+        state.railFrame = 0;
+        state.railMotion = "idle";
+        updateFocus();
+      };
+
+      state.railFrame = requestAnimationFrame(step);
+    }
+
+    function animatePageTo(top, duration = MOTION.tripClickMs, onComplete) {
+      if (state.pageFrame) {
+        cancelAnimationFrame(state.pageFrame);
+        state.pageFrame = 0;
+      }
+
+      const startTop = window.scrollY;
+      const targetTop = Math.max(0, top);
+      const startedAt = performance.now();
+
+      const step = now => {
+        const progress = smooth01((now - startedAt) / duration);
+        window.scrollTo({ top: startTop + (targetTop - startTop) * progress });
+        updateDetailProgress();
+
+        if (progress < 1) {
+          state.pageFrame = requestAnimationFrame(step);
+          return;
+        }
+
+        window.scrollTo({ top: targetTop });
+        state.pageFrame = 0;
+        updateDetailVisuals();
+        if (onComplete) onComplete();
+      };
+
+      state.pageFrame = requestAnimationFrame(step);
     }
 
     function glideTo(left, behavior = "auto") {
       state.targetScrollLeft = clampScrollLeft(left);
       if (behavior === "smooth") {
-        els.stage.scrollTo({ left: state.targetScrollLeft, behavior: "smooth" });
+        animateRailTo(state.targetScrollLeft);
         return;
       }
-      if (!state.railFrame) state.railFrame = requestAnimationFrame(flushRailScroll);
+      if (state.railMotion !== "follow") {
+        stopRailMotion();
+        state.railMotion = "follow";
+        state.railFrame = requestAnimationFrame(flushRailScroll);
+      }
     }
 
     function normalizeWheelDelta(event) {
@@ -611,48 +1006,89 @@
       return y >= window.innerHeight / 6 && y <= window.innerHeight * 5 / 6;
     }
 
+    function isOverviewVisible() {
+      const rect = els.overview.getBoundingClientRect();
+      return rect.bottom > 0 && rect.top < window.innerHeight;
+    }
+
     function selectTrip(index = state.activeIndex) {
       window.clearTimeout(state.openFrame);
+      if (state.pageFrame) {
+        cancelAnimationFrame(state.pageFrame);
+        state.pageFrame = 0;
+      }
       const nextIndex = Math.max(0, Math.min(index, state.trips.length - 1));
       state.activeIndex = nextIndex;
-      state.selectedIndex = state.activeIndex;
+      state.selectedIndex = nextIndex;
+      state.railCloseOnDrift = false;
+      clearDetailFocusLock({ refresh: false });
       state.detailOpen = true;
       state.centeringSelected = true;
       state.detailTargetScrollLeft = 0;
       updateAmbient();
       renderDetail();
       requestAnimationFrame(() => {
-        glideTo(scrollLeftForTrip(state.activeIndex), "smooth");
-        window.scrollTo({ top: els.detail.offsetTop, behavior: "smooth" });
-        state.openFrame = window.setTimeout(() => {
+        animateRailTo(scrollLeftForTrip(nextIndex), MOTION.tripClickMs);
+        animatePageTo(els.detail.offsetTop, MOTION.tripClickMs, () => {
           state.centeringSelected = false;
+          state.activeIndex = nextIndex;
+          state.selectedIndex = nextIndex;
+          updateAmbient();
           updateFocus();
-        }, 700);
+        });
       });
     }
 
     function closeDetail({ scrollTop = false, refreshFocus = true } = {}) {
       window.clearTimeout(state.openFrame);
+      if (state.pageFrame) {
+        cancelAnimationFrame(state.pageFrame);
+        state.pageFrame = 0;
+      }
       state.centeringSelected = false;
       state.detailOpen = false;
       state.selectedIndex = null;
+      state.railCloseOnDrift = false;
+      clearDetailFocusLock({ refresh: false });
       state.detailTargetScrollLeft = 0;
       renderDetail();
       if (refreshFocus) updateFocus();
-      if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
+      if (scrollTop) animatePageTo(0, MOTION.tripClickMs);
+    }
+
+    function flushDetailScroll() {
+      const track = els.detail.querySelector(".photo-track");
+      if (!track || state.detailMotion !== "follow") {
+        state.detailFrame = 0;
+        return;
+      }
+
+      const distance = state.detailTargetScrollLeft - track.scrollLeft;
+      if (Math.abs(distance) <= MOTION.settlePx) {
+        track.scrollLeft = state.detailTargetScrollLeft;
+        updateDetailCards();
+        state.detailFrame = 0;
+        state.detailMotion = "idle";
+        return;
+      }
+
+      track.scrollLeft += distance * MOTION.wheelFollow;
+      updateDetailCards();
+      state.detailFrame = requestAnimationFrame(flushDetailScroll);
     }
 
     function scrollDetailTrack(delta = 0) {
       const track = els.detail.querySelector(".photo-track");
       if (!track) return;
+      if (state.detailMotion !== "follow" || state.detailFocusIndex !== null) {
+        clearDetailFocusLock({ refresh: false });
+      }
       const maxLeft = Math.max(0, track.scrollWidth - track.clientWidth);
-      const base = state.detailFrame ? state.detailTargetScrollLeft : track.scrollLeft;
+      const base = state.detailMotion === "follow" ? state.detailTargetScrollLeft : track.scrollLeft;
       state.detailTargetScrollLeft = Math.max(0, Math.min(base + delta, maxLeft));
-      if (!state.detailFrame) {
-        state.detailFrame = requestAnimationFrame(() => {
-          track.scrollLeft = state.detailTargetScrollLeft;
-          state.detailFrame = 0;
-        });
+      if (state.detailMotion !== "follow") {
+        state.detailMotion = "follow";
+        state.detailFrame = requestAnimationFrame(flushDetailScroll);
       }
     }
 
@@ -677,17 +1113,21 @@
       }, { passive: false });
 
       window.addEventListener("wheel", event => {
-        const nearTop = window.scrollY < 12;
-        if (nearTop && isInRailZone(event)) {
+        const overviewVisible = isOverviewVisible();
+        const overviewRect = els.overview.getBoundingClientRect();
+        const pointerY = Number.isFinite(event.clientY) ? event.clientY : state.mouseY;
+        const pointerInOverview = pointerY >= overviewRect.top && pointerY <= overviewRect.bottom;
+        if (overviewVisible && pointerInOverview && isInRailZone(event)) {
           event.preventDefault();
           state.centeringSelected = false;
+          state.railCloseOnDrift = state.detailOpen && state.selectedIndex !== null;
           const delta = normalizeWheelDelta(event);
-          const base = state.railFrame ? state.targetScrollLeft : els.stage.scrollLeft;
+          const base = state.railMotion === "follow" ? state.targetScrollLeft : els.stage.scrollLeft;
           glideTo(base + delta);
           return;
         }
 
-        if (state.detailOpen && nearTop && event.deltaY > 0) {
+        if (state.detailOpen && window.scrollY < 12 && event.deltaY > 0) {
           return;
         }
       }, { passive: false });
@@ -704,8 +1144,12 @@
 
       window.addEventListener("scroll", () => {
         updateFocus();
+        updateDetailVisuals();
       });
-      window.addEventListener("resize", updateFocus);
+      window.addEventListener("resize", () => {
+        updateFocus();
+        updateDetailVisuals();
+      });
     }
 
     async function loadData() {
@@ -721,7 +1165,10 @@
       renderRail();
       renderDetail();
       updateAmbient();
-      requestAnimationFrame(updateFocus);
+      requestAnimationFrame(() => {
+        updateFocus();
+        updateDetailVisuals();
+      });
     }
 
     bindEvents();
