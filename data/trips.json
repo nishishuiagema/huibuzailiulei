@@ -673,19 +673,14 @@
       ]
     },
     {
-      "id": "20251024-13",
+      "id": "20251026-13",
       "place": "北京",
       "images": [
-        "assets/photos/北京/20251024_1739.JPEG",
         "assets/photos/北京/20251026_1031.JPG",
-        "assets/photos/北京/20251026_1045.JPEG"
+        "assets/photos/北京/20251026_1045.JPEG",
+        "assets/photos/北京/20251026_1117.JPEG"
       ],
       "photos": [
-        {
-          "src": "assets/photos/北京/20251024_1739.JPEG",
-          "time": "2025.10.24 17:39",
-          "text": ""
-        },
         {
           "src": "assets/photos/北京/20251026_1031.JPG",
           "time": "2025.10.26 10:31",
@@ -704,6 +699,11 @@
         {
           "src": "assets/photos/北京/20251026_1518.JPG",
           "time": "2025.10.26 15:18",
+          "text": ""
+        },
+        {
+          "src": "assets/photos/北京/20251026_1739.JPEG",
+          "time": "2025.10.26 17:39",
           "text": ""
         },
         {

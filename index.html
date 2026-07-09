@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
@@ -511,6 +511,19 @@
       return String(value).split(",").map(item => item.trim()).filter(Boolean);
     }
 
+    function datePartsFrom(value) {
+      const matches = String(value || "").match(/\d{4}[.\/-]\d{2}[.\/-]\d{2}/g) || [];
+      return matches.map(item => item.replaceAll("-", ".").replaceAll("/", "."));
+    }
+
+    function compactDateRange(values) {
+      const dates = values.flatMap(datePartsFrom).filter(Boolean);
+      if (!dates.length) return "";
+      const first = dates[0];
+      const last = dates[dates.length - 1];
+      return first === last ? first : `${first} - ${last}`;
+    }
+
     function normalizeTrip(trip, index) {
       const images = cleanList(trip.images).length ? cleanList(trip.images) : cleanList(trip.image);
       const safeImages = images.length ? images : ["assets/photos/beijing.jpg"];
@@ -528,13 +541,7 @@
       const coverImages = images.length ? images : photos.map(photo => photo.src).filter(Boolean);
       const safeCoverImages = coverImages.length ? coverImages : safeImages;
       const timeValues = photos.map(photo => photo.time).filter(Boolean);
-      const dateLabel = trip.date || trip.time || (
-        timeValues.length
-          ? timeValues[0] === timeValues[timeValues.length - 1]
-            ? timeValues[0]
-            : `${timeValues[0]} - ${timeValues[timeValues.length - 1]}`
-          : ""
-      );
+      const dateLabel = compactDateRange(cleanList(trip.date || trip.time)) || compactDateRange(timeValues);
 
       return {
         id: trip.id || `trip-${index + 1}`,
