@@ -54,7 +54,7 @@
       filter: blur(22px) saturate(.85);
       opacity: .1;
       transform: scale(1.08);
-      transition: background-image .4s ease, opacity .25s ease;
+      transition: background-image .28s ease, opacity .175s ease;
     }
 
     .ambient::after {
@@ -108,7 +108,7 @@
       flex: 0 0 auto;
       opacity: var(--node-opacity);
       transform: scale(var(--node-scale));
-      transition: opacity .2s ease, transform .2s ease;
+      transition: opacity .14s ease, transform .14s ease;
       cursor: pointer;
       will-change: transform, opacity;
     }
@@ -136,7 +136,7 @@
       box-shadow: var(--shadow);
       overflow: hidden;
       transform-origin: 50% 92%;
-      transition: transform .42s cubic-bezier(.2, .86, .28, 1), box-shadow .2s ease;
+      transition: transform .294s cubic-bezier(.2, .86, .28, 1), box-shadow .14s ease;
       will-change: transform;
     }
 
@@ -231,7 +231,7 @@
       grid-template-rows: 14svh 86svh;
       gap: 0;
       opacity: var(--detail-opacity, 1);
-      transition: opacity .12s linear;
+      transition: opacity .084s linear;
       will-change: opacity;
     }
 
@@ -299,7 +299,7 @@
       overflow: visible;
       z-index: var(--card-z);
       cursor: pointer;
-      transition: width .18s cubic-bezier(.2, .86, .28, 1), flex-basis .18s cubic-bezier(.2, .86, .28, 1);
+      transition: width .126s cubic-bezier(.2, .86, .28, 1), flex-basis .126s cubic-bezier(.2, .86, .28, 1);
     }
 
     .photo-track.is-animating .photo-card,
@@ -323,7 +323,7 @@
       transform-style: preserve-3d;
       backface-visibility: hidden;
       will-change: width, transform;
-      transition: width .2s cubic-bezier(.2, .86, .28, 1), transform .28s cubic-bezier(.2, .86, .28, 1);
+      transition: width .14s cubic-bezier(.2, .86, .28, 1), transform .196s cubic-bezier(.2, .86, .28, 1);
     }
 
     .photo-media img {
@@ -337,7 +337,7 @@
       background: transparent;
       border-radius: 0;
       backface-visibility: hidden;
-      transition: max-width .2s cubic-bezier(.2, .86, .28, 1), max-height .2s cubic-bezier(.2, .86, .28, 1);
+      transition: max-width .14s cubic-bezier(.2, .86, .28, 1), max-height .14s cubic-bezier(.2, .86, .28, 1);
     }
 
     .photo-copy {
@@ -354,7 +354,7 @@
       border: 0;
       border-radius: 0;
       text-align: center;
-      transition: width .18s cubic-bezier(.2, .86, .28, 1);
+      transition: width .126s cubic-bezier(.2, .86, .28, 1);
     }
 
     .photo-time {
@@ -497,8 +497,8 @@
     };
 
     const MOTION = {
-      tripClickMs: 760,
-      photoClickMs: 550,
+      tripClickMs: 532,
+      photoClickMs: 385,
       wheelFollow: .24,
       settlePx: .55,
       photoTiltDeg: 7,
