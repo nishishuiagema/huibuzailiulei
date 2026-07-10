@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title> </title>
-  <meta name="description" content="极简旅行照片记录。">
+  <meta name="description" content="鏋佺畝鏃呰鐓х墖璁板綍銆?>
   <style>
     :root {
       color-scheme: light;
@@ -437,30 +437,18 @@
 <body>
   <div class="ambient" id="ambient" aria-hidden="true"></div>
   <main>
-    <section class="overview" id="overview" aria-label="旅行地点">
+    <section class="overview" id="overview" aria-label="鏃呰鍦扮偣">
       <div class="stage" id="stage">
         <div class="rail" id="rail"></div>
       </div>
     </section>
-    <section class="detail" id="detail" aria-label="照片说明">
+    <section class="detail" id="detail" aria-label="鐓х墖璇存槑">
       <div class="detail-inner" id="detailInner"></div>
     </section>
   </main>
 
   <script>
-    const fallbackData = {
-      trips: [
-        {
-          place: "北京",
-          images: ["assets/photos/beijing.jpg", "assets/photos/beijing-2.jpg", "assets/photos/beijing-3.jpg"],
-          photos: [
-            { src: "assets/photos/beijing.jpg", time: "2026.05.18", text: "傍晚的水边，光线从柳树枝叶里落下来。" },
-            { src: "assets/photos/beijing-2.jpg", time: "2026.05.18", text: "城市里最安静的一段路，适合慢慢走。" },
-            { src: "assets/photos/beijing-3.jpg", time: "2026.05.19", text: "离开前回头看了一眼，记住这次短暂停留。" }
-          ]
-        }
-      ]
-    };
+    const fallbackData = { trips: [] };
 
     const state = {
       trips: [],
@@ -545,7 +533,7 @@
 
       return {
         id: trip.id || `trip-${index + 1}`,
-        place: trip.place || "未命名地点",
+        place: trip.place || "鏈懡鍚嶅湴鐐?,
         dateLabel,
         images: [0, 1, 2].map(imageIndex => safeCoverImages[imageIndex % safeCoverImages.length]),
         photos
@@ -620,7 +608,7 @@
 
       els.detailInner.innerHTML = `
         <h2 class="detail-place">${escapeHtml(trip.place)}</h2>
-        <div class="photo-track" aria-label="${escapeHtml(trip.place)}照片">
+        <div class="photo-track" aria-label="${escapeHtml(trip.place)}鐓х墖">
           ${trip.photos.map((photo, photoIndex) => `
             <article class="photo-card" data-photo-index="${photoIndex}" aria-label="${escapeHtml([trip.place, photo.time].filter(Boolean).join(" "))}">
             <div class="photo-media">
