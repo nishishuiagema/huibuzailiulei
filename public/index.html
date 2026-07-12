@@ -722,15 +722,15 @@
         const naturalWidth = img?.naturalWidth || baseWidth;
         const naturalHeight = img?.naturalHeight || baseHeight;
         const ratio = naturalWidth / Math.max(1, naturalHeight);
-        const maxWidth = settings.compact ? baseWidth : Math.max(96, baseWidth * scale);
-        const maxHeight = settings.compact ? baseHeight : Math.max(96, baseHeight * scale);
+        const maxWidth = Math.max(96, baseWidth * scale);
+        const maxHeight = Math.max(96, baseHeight * scale);
         const layoutWidth = settings.compact
           ? baseWidth
           : Math.max(96, Math.min(maxWidth, maxHeight * ratio));
         layoutWidths[index] = layoutWidth;
 
         setStyleVar(card, "--card-scale", String(scale));
-        setStyleVar(card, "--card-render-scale", String(settings.compact ? scale : 1));
+        setStyleVar(card, "--card-render-scale", "1");
         setStyleVar(card, "--card-max-width", `${maxWidth}px`);
         setStyleVar(card, "--card-max-height", `${maxHeight}px`);
         setStyleVar(card, "--card-layout-width", `${layoutWidth}px`);
